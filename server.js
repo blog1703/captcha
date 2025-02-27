@@ -24,7 +24,7 @@ app.post('/verify-captcha', async (req, res) => {
 
         if (response.data.success) {
             // Если CAPTCHA пройдена, перенаправляем на целевую страницу
-            res.status(200).send({ success: true, redirectUrl: 'https://ваш-сайт.com/контент' });
+            res.status(200).send({ success: true, redirectUrl: 'https://iptvgive.vercel.app/' });
         } else {
             res.status(400).send({ success: false, message: 'Неверная CAPTCHA.' });
         }
