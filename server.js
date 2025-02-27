@@ -1,14 +1,14 @@
 const express = require('express');
 const axios = require('axios');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Ваш секретный ключ от Google reCAPTCHA
 const RECAPTCHA_SECRET_KEY = '6LdbaeQqAAAAAF0woXtZD2cRNUyVtDSHDG7T4OOI';
 
-// Маршрут для проверки CAPTCHA
 app.post('/verify-captcha', async (req, res) => {
     const { captchaResponse } = req.body;
 
@@ -17,14 +17,12 @@ app.post('/verify-captcha', async (req, res) => {
     }
 
     try {
-        // Отправляем запрос к Google reCAPTCHA для проверки
         const response = await axios.post(
             `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${captchaResponse}`
         );
 
         if (response.data.success) {
-            // Если CAPTCHA пройдена, перенаправляем на целевую страницу
-            res.status(200).send({ success: true, redirectUrl: 'https://iptvgive.vercel.app/' });
+            res.status(200).send({ success: true, redirectUrl: 'https://ваш-сайт.com/контент' });
         } else {
             res.status(400).send({ success: false, message: 'Неверная CAPTCHA.' });
         }
@@ -32,4 +30,9 @@ app.post('/verify-captcha', async (req, res) => {
         console.error('Ошибка при проверке CAPTCHA:', error);
         res.status(500).send({ success: false, message: 'Ошибка сервера.' });
     }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
