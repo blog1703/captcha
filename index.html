@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проверка CAPTCHA</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+<body>
+    <h1>Пройдите проверку CAPTCHA</h1>
+    <form id="captcha-form">
+        <div class="g-recaptcha" data-sitekey="6LesceEqAAAAAIVMmjoZEmiDcv5nI7B8k4qAg7fP"></div>
+        <button type="submit">Продолжить</button>
+    </form>
+
+    <script>
+        document.getElementById('captcha-form').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Отменяем стандартное поведение формы
+
+            const captchaResponse = grecaptcha.getResponse();
+
+            if (!captchaResponse) {
+                alert('Пожалуйста, пройдите CAPTCHA!');
+                return;
+            }
+
+            try {
+                // Отправляем ответ CAPTCHA на сервер
+                const response = await fetch('/verify-captcha', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ captchaResponse }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Перенаправляем на целевую страницу
+                    window.location.href = data.redirectUrl;
+                } else {
+                    alert(data.message || 'Ошибка при проверке CAPTCHA.');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+                alert('Ошибка при отправке запроса.');
+            }
+        });
+    </script>
+</body>
+</html>
