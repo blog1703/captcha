@@ -33,9 +33,3 @@ app.post('/verify-captcha', async (req, res) => {
         res.status(500).send({ success: false, message: 'Ошибка сервера.' });
     }
 });
-
-// Запуск сервера
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Сервер запущен на http://localhost:${PORT}`);
-});
