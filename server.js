@@ -6,7 +6,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Ваш секретный ключ от Google reCAPTCHA
-const RECAPTCHA_SECRET_KEY = '6LesceEqAAAAAL85Lw7HM3A0qqkOROY-OjvD0_Tf';
+const RECAPTCHA_SECRET_KEY = '6LesceEqAAAAAIVMmjoZEmiDcv5nI7B8k4qAg7fP';
 
 // Маршрут для проверки CAPTCHA
 app.post('/verify-captcha', async (req, res) => {
